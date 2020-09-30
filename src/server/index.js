@@ -25,4 +25,19 @@ app.get('/apod', async (req, res) => {
     }
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.get('/rovers/:name', async (req, res) => {
+    try {
+        const rover = req.params.name
+        const manifest = await fetch(`https://api.nasa.gov/mars-photos/api/v1/manifests/${rover}?api_key=${process.env.API_KEY}`)
+            .then(res => res.json())
+            .catch(err => console.log('error:', err))
+        const photos = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${rover}/photos?earth_date=${manifest.photo_manifest.max_date}&sol=${manifest.photo_manifest.max_sol}&api_key=${process.env.API_KEY}`)
+            .then(res => res.json())
+            .catch(err => console.log('error:', err))
+        res.send(photos)
+    } catch (err) {
+        console.log('error:', err);
+    }
+})
+
+app.listen(port, () => console.log(`Mars Dashboard app listening on port ${port}!`))

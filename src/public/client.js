@@ -65,7 +65,6 @@ const Greeting = (name) => {
 
 // Example of a pure function that renders infomation requested from the backend
 const ImageOfTheDay = (apod) => {
-
     // If image does not already exist, or it is not from today -- request it again
     const today = new Date()
     const photodate = new Date(apod.date)
@@ -77,11 +76,11 @@ const ImageOfTheDay = (apod) => {
     }
 
     // check if the photo of the day is actually type video!
-    if (apod.media_type === "video") {
+    if (apod.image.media_type === "video") {
         return (`
-            <p>See today's featured video <a href="${apod.url}">here</a></p>
-            <p>${apod.title}</p>
-            <p>${apod.explanation}</p>
+            <p>See today's featured video <a href="${apod.image.url}">here</a></p>
+            <p>${apod.image.title}</p>
+            <p>${apod.image.explanation}</p>
         `)
     } else {
         return (`
@@ -101,5 +100,19 @@ const getImageOfTheDay = (state) => {
         .then(res => res.json())
         .then(apod => updateStore(store, { apod }))
 
-    return data
+    // return data
+}
+
+const getRover = rover => {
+    fetch(`http://localhost:3000/rovers/${rover}`)
+        .then(res => res.json())
+        .then(images => 
+            updateStore(store, {
+                roversData: {
+                    [rover]: {
+                        photos: images.photos,
+                        info: images.photos[0].rover
+                    }
+                }
+            }))
 }
