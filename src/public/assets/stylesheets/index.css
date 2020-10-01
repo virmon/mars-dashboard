@@ -5,6 +5,9 @@ body {
   flex-direction: column;
   font-family: Arial;
   min-height: 100vh;
+  letter-spacing: 1.5px;
+  background-color: #eaf1ff;
+  /* background-color: #d6d7d9; */
 }
 
 header {
@@ -31,18 +34,26 @@ footer {
   padding: 1em;
   width: 100%;
   text-align: center;
-  background-color: whitesmoke;
+  background-color: #105bd8;
 }
 
 .menu-item:hover {
-  background-color: teal;
+  background-color: #3e7fff;
   cursor: pointer;
   transition: 0.2s ease-in-out;
 }
 
 .menu-item a {
   text-decoration: none;
-  color: black;
+  color: white;
+}
+
+.apod-explain {
+  text-indent: 4em;
+  text-align: justify;
+  text-justify: inter-word;
+  line-height: 1.5em;
+  padding: 15px;
 }
 
 .gallery-title {

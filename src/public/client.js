@@ -2,6 +2,8 @@ let store = {
     user: { name: "Student" },
     apod: '',
     rovers: ['Curiosity', 'Opportunity', 'Spirit'],
+    roversPhoto: '',
+    activeMenu: 'apod'
 }
 
 // add our markup to the page
@@ -12,8 +14,29 @@ const updateStore = (store, newState) => {
     render(root, store)
 }
 
+const AttachEventClick = (link) => {
+    console.log('<AttachEventClick />')
+    link.addEventListener("click", function (el) {
+        if (this.id === "apod") {
+            console.log(this.id, `is clicked`)
+            updateStore(store, { activeMenu: 'apod' })
+            // getImageOfTheDay(store)
+        } else {
+            console.log(this.id, `is clicked`)
+            updateStore(store, { activeMenu: this.id })
+            console.log('fetch rover')
+            getRover(this.id)
+        }
+      },
+      false
+    );
+};
+
 const render = async (root, state) => {
     root.innerHTML = App(state)
+
+    const menu = root.getElementsByTagName("li");
+    [...menu].forEach((element, i) => i < 4 ? AttachEventClick(element) : null);
 }
 
 
@@ -52,22 +75,21 @@ const ImageOfTheDay = (apod) => {
     console.log(photodate.getDate() === today.getDate());
     if (!apod || apod.date === today.getDate() ) {
         getImageOfTheDay(store)
-        getRover(`curiosity`)
-    } else {
-        return showError(apod)
     }
 
     // check if the photo of the day is actually type video!
     if (apod.media_type === "video") {
         return (`
+            <h3 class=''>Astronomic Picture of the Day</h3>
             <p>See today's featured video <a href="${apod.url}">here</a></p>
             <p>${apod.title}</p>
-            <p>${apod.explanation}</p>
+            <p class='apod-explain'>${apod.explanation}</p>
         `)
     } else {
         return (`
+            <h3 class=''>Astronomic Picture of the Day</h3>
             <img src="${apod.url}" height="350px" width="100%" />
-            <p>${apod.explanation}</p>
+            <p class='apod-explain'>${apod.explanation}</p>
         `)
     }
 }
@@ -76,13 +98,11 @@ const Home = (state) => {
     let { rovers, apod } = state
 
     return `
-        <header></header>
+        <header><h1>Mars Rover Dashboard</h1></header>
         <main>
-            ${Greeting(store.user.name)}
             ${Menu(rovers)}
             <section>
-                ${ImageOfTheDay(apod)}
-                ${PhotoList(store.activeMenu)}
+                ${Dashboard(store)}
             </section>
         </main>
         <footer></footer>
@@ -94,21 +114,43 @@ const Menu = () => {
 
     return(`
         <ul class='menu'>
-            <li class='menu-item'><a href='#'>APOD</a></li>
+            <li id='apod' class='menu-item'>APOD</li>
             ${rovers.map((rover) => (
-                `<li id='${rover}' class='menu-item'><a href='/${rover}'>${rover}</a></li>`
+                `<li id='${rover}' class='menu-item'>${rover}</li>`
             )).join("")}
         </ul>
     `)
 }
 
-const PhotoList = (name) => {
-    const roverPhotos = store.roversPhoto[name].photos
+const Dashboard = (state) => {
+    console.log('<Dashboard />')
+    if (!state.apod) {
+        console.log('Fetching apod data')
+        getImageOfTheDay(state)
+        return `Loading...`
+    } else {
+        if (state.activeMenu === 'apod') {
+            console.log('<SHOW APOD at startup>')
+            return ImageOfTheDay(state.apod)
+        }
+        console.log(`SHOW ${state.activeMenu}`)
+        return PhotoList(state.activeMenu)
+    }
+}
 
+const PhotoList = (rover) => {
+
+    if (!store.roversPhoto[rover]) {
+        return `Loading...`
+    }
+    let roverPhotos = store.roversPhoto[rover].photos
+    
     return (`
         <div class='gallery-title'>
             <h3 class='rover-name'>${roverPhotos[0].rover.name}</h3>
-            <h4 class='latest-date'>${roverPhotos[0].earth_date}</h4>
+            <h4 class='latest-date'>Launch Date: ${roverPhotos[0].rover.launch_date}</h4>
+            <h4 class='latest-date'>Landing Date: ${roverPhotos[0].rover.landing_date}</h4>
+            <h4 class='latest-date'>Status: ${roverPhotos[0].rover.status}</h4>
         </div>
         <div class='gallery'>
             ${roverPhotos.map(photo => (`
@@ -117,11 +159,9 @@ const PhotoList = (name) => {
                     <li class='photo-info'>
                         <img src='${photo.img_src}' alt='${photo.name}' />
                     </li>
-                    <li class='photo-info'>Launch Date: ${photo.rover.launch_date}</li>
-                    <li class='photo-info'>Landing Date: ${photo.rover.landing_date}</li>
-                    <li class='photo-info'>Status: ${photo.rover.status}</li>
+                    <li class='photo-info'>${photo.camera.full_name}</li>
                 </ul>
-        `)).join("")}
+            `)).join("")}
         </div>
     `)
 }
@@ -135,16 +175,19 @@ const showError = (err) => {
 // ------------------------------------------------------  API CALLS
 
 // Example API call
-const getImageOfTheDay = (state) => {
-    fetch(`http://localhost:3000/apod`)
+const getImageOfTheDay = async (state) => {
+    await fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
-        .then(apod => updateStore(store, { apod: apod.image }))
+        .then(apod => updateStore(store, { 
+                apod: apod.image,
+                activeMenu: 'apod'
+            })
+        )
         .catch(err => console.log(err))
-    // return data
 }
 
-const getRover = rover => {
-    fetch(`http://localhost:3000/rovers/${rover}/photos`)
+const getRover = async rover => {
+    await fetch(`http://localhost:3000/rovers/${rover}/photos`)
         .then(res => res.json())
         .then(data => 
             updateStore(store, {
@@ -153,7 +196,7 @@ const getRover = rover => {
                         photos: data.latest_photos
                     }
                 },
-                activeMenu: rover
+                // activeMenu: rover
             }))
             // updateStore(store, data))
         // .catch(err => console.log(err))
