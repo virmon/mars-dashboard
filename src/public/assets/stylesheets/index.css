@@ -20,6 +20,30 @@ footer {
   /* footer styles */
 }
 
+.menu {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.menu-item {
+  list-style-type: none;
+  padding: 1em;
+  width: 100%;
+  text-align: center;
+  background-color: whitesmoke;
+}
+
+.menu-item:hover {
+  background-color: teal;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.menu-item a {
+  text-decoration: none;
+  color: black;
+}
+
 /* -------------------  TABLET  --------------------- */
 @media (min-width: 768px) {
   /* use mobile */
