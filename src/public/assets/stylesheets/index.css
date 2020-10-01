@@ -23,6 +23,7 @@ footer {
 .menu {
   display: flex;
   flex-flow: row wrap;
+  padding: 2em 0;
 }
 
 .menu-item {
@@ -42,6 +43,30 @@ footer {
 .menu-item a {
   text-decoration: none;
   color: black;
+}
+
+.gallery-title {
+  text-align: center;
+  padding-top: 2em;
+}
+
+.gallery-title .rover-name {
+  font-size: xx-large;
+}
+
+.photo-list {
+  margin: 3em 0;
+  padding: 2em;
+  /* border: 1px solid black; */
+  height: 100%;
+  background-color: white;
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+.photo-list .photo-info img {
+  width: 100%;
 }
 
 /* -------------------  TABLET  --------------------- */
