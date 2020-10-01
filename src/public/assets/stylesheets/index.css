@@ -54,10 +54,15 @@ footer {
   font-size: xx-large;
 }
 
+.gallery {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
 .photo-list {
   margin: 3em 0;
   padding: 2em;
-  /* border: 1px solid black; */
   height: 100%;
   background-color: white;
   -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
@@ -72,6 +77,12 @@ footer {
 /* -------------------  TABLET  --------------------- */
 @media (min-width: 768px) {
   /* use mobile */
+  .photo-list {
+    width: 30%;
+  }
+  .menu-item {
+    width: 25%;
+  }
 }
 
 /* -------------------  DESKTOP  -------------------- */
@@ -84,4 +95,7 @@ footer {
 
 @media (min-width: 1824px) {
   /* use mobile */
+  .photo-list {
+    width: 18%;
+  }
 }
