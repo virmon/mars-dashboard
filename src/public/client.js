@@ -1,4 +1,4 @@
-let store = {
+const store = {
     user: { name: "Student" },
     apod: '',
     rovers: ['Curiosity', 'Opportunity', 'Spirit'],
@@ -15,16 +15,14 @@ const updateStore = (store, newState) => {
 }
 
 const AttachEventClick = (link) => {
-    console.log('<AttachEventClick />')
     link.addEventListener("click", function (el) {
         if (this.id === "apod") {
-            console.log(this.id, `is clicked`)
+            // console.log(this.id, `is clicked`)
             updateStore(store, { activeMenu: 'apod' })
-            // getImageOfTheDay(store)
         } else {
-            console.log(this.id, `is clicked`)
+            // console.log(this.id, `is clicked`)
             updateStore(store, { activeMenu: this.id })
-            console.log('fetch rover')
+            // console.log('fetch rover')
             getRover(this.id)
         }
       },
@@ -69,10 +67,10 @@ const Greeting = (name) => {
 const ImageOfTheDay = (apod) => {
     // If image does not already exist, or it is not from today -- request it again
     const today = new Date()
-    const photodate = new Date(apod.date)
-    console.log(photodate.getDate(), today.getDate());
+    // const photodate = new Date(apod.date)
+    // console.log(photodate.getDate(), today.getDate());
 
-    console.log(photodate.getDate() === today.getDate());
+    // console.log(photodate.getDate() === today.getDate());
     if (!apod || apod.date === today.getDate() ) {
         getImageOfTheDay(store)
     }
@@ -94,6 +92,10 @@ const ImageOfTheDay = (apod) => {
     }
 }
 
+/**
+* @description Main section of the content
+* @param {string} state
+*/
 const Home = (state) => {
     let { rovers, apod } = state
 
@@ -105,39 +107,50 @@ const Home = (state) => {
                 ${Dashboard(store)}
             </section>
         </main>
-        <footer></footer>
+        <footer>All Content are from https://api.nasa.gov/</footer>
     `
 }
 
-const Menu = () => {
-    const { rovers } = store
-
+/**
+* @description Menu component
+* @param {string} rover - The name of the rover to be fetched
+* @returns {string} - unordered list of rovers
+*/
+const Menu = (rovers) => {
     return(`
         <ul class='menu'>
             <li id='apod' class='menu-item'>APOD</li>
-            ${rovers.map((rover) => (
+            ${rovers.map(rover => (
                 `<li id='${rover}' class='menu-item'>${rover}</li>`
             )).join("")}
         </ul>
     `)
 }
 
+/**
+* @description Dashboard component
+* @param {string} state - current state of the store
+* @returns {function} component
+*/
 const Dashboard = (state) => {
-    console.log('<Dashboard />')
     if (!state.apod) {
         console.log('Fetching apod data')
         getImageOfTheDay(state)
         return `Loading...`
     } else {
         if (state.activeMenu === 'apod') {
-            console.log('<SHOW APOD at startup>')
+            // console.log('<SHOW APOD at startup>')
             return ImageOfTheDay(state.apod)
         }
-        console.log(`SHOW ${state.activeMenu}`)
+        // console.log(`SHOW ${state.activeMenu}`)
         return PhotoList(state.activeMenu)
     }
 }
 
+/**
+* @description List of photos component
+* @param {string} rover - Selected rover name to be displayed
+*/
 const PhotoList = (rover) => {
 
     if (!store.roversPhoto[rover]) {
@@ -174,7 +187,9 @@ const showError = (err) => {
 
 // ------------------------------------------------------  API CALLS
 
-// Example API call
+/**
+* @description Fetch APOD to update store
+*/
 const getImageOfTheDay = async (state) => {
     await fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
@@ -186,6 +201,10 @@ const getImageOfTheDay = async (state) => {
         .catch(err => console.log(err))
 }
 
+/**
+* @description Fetch rover photos to update store
+* @param {string} rover - The name of the rover to be fetched
+*/
 const getRover = async rover => {
     await fetch(`http://localhost:3000/rovers/${rover}/photos`)
         .then(res => res.json())
