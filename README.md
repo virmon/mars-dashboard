@@ -22,5 +22,12 @@ We have supplied some of the foundational code for you. So follow these steps to
 
 ### Screenshots of the Project
 
-![APOD on desktop](/src/public/assets/screenshots/apod-desktop.png)
+- **Desktop View**
+![APOD on desktop](./screenshots/apod-desktop.png)
+![Curiosity on desktop](./screenshots/curiosity-desktop.png)
 
+- **Mobile View**
+<div>
+<img src="./screenshots/apod-mobile.png" alt="APOD" height="500">
+<img src="./screenshots/apod-mobile.png" alt="APOD" height="500">
+</div>
