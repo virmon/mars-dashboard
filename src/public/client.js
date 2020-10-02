@@ -170,7 +170,7 @@ const PhotoList = (state) => {
     const launchDate = currentRover.get('0').rover.launch_date
     const landingDate = currentRover.get('0').rover.landing_date
     const status = currentRover.get('0').rover.status
-
+    
     return (`
         <div class='gallery-title'>
             <h3 class='rover-name'>${roverName}</h3>
@@ -186,6 +186,7 @@ const PhotoList = (state) => {
                         <img src='${photo.img_src}' alt='${photo.name}' />
                     </li>
                     <li class='photo-info'>${photo.camera.full_name}</li>
+                    <li class='photo-info'>${photo.earth_date}</li>
                 </ul>
             `)).join("")}
         </div>

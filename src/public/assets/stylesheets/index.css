@@ -43,7 +43,7 @@ footer {
   transition: 0.2s ease-in-out;
 }
 
-.menu-item a {
+.menu-item {
   text-decoration: none;
   color: white;
 }
