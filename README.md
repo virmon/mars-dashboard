@@ -22,12 +22,15 @@ We have supplied some of the foundational code for you. So follow these steps to
 
 ### Screenshots of the Project
 
-- **Desktop View**
+- **Astronomic Picture of the Day**
 ![APOD on desktop](./screenshots/apod-desktop.png)
+- **Gallery**
 ![Curiosity on desktop](./screenshots/curiosity-desktop.png)
 
 - **Mobile View**
-<div>
-<img src="./screenshots/apod-mobile.png" alt="APOD" height="500">
-<img src="./screenshots/apod-mobile.png" alt="APOD" height="500">
-</div>
+    <div>
+        <img src="./screenshots/apod-mobile.png" alt="APOD" height="500">
+        <img src="./screenshots/spirit-mobile.png" alt="APOD" height="500">
+    </div>
+
+### Data are from https://api.nasa.gov/
