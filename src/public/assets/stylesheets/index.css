@@ -48,6 +48,10 @@ footer {
   color: white;
 }
 
+.apod-title {
+  padding: 10px 0;
+}
+
 .apod-explain {
   text-indent: 4em;
   text-align: justify;
