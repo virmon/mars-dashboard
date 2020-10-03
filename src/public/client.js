@@ -144,7 +144,7 @@ const Dashboard = (state) => {
     if (!apod) {
         // console.log('Fetching apod data')
         getImageOfTheDay(state)
-        return `Loading...`
+        return Loading()
     } else {
         if (activeMenu === 'apod') {
             // console.log('<SHOW APOD at startup>')
@@ -163,14 +163,18 @@ const PhotoList = (state) => {
     const currentRover = state.get('roversPhoto')
 
     if (!currentRover) {
-        return `Loading...`
+        return Loading()
     }
     
     const roverName = currentRover.get('0').rover.name
     const launchDate = currentRover.get('0').rover.launch_date
     const landingDate = currentRover.get('0').rover.landing_date
     const status = currentRover.get('0').rover.status
-    
+
+    return Gallery({ currentRover, roverName, launchDate, landingDate, status })
+}
+
+const Gallery = ({ currentRover, roverName, launchDate, landingDate, status }) => {
     return (`
         <div class='gallery-title'>
             <h3 class='rover-name'>${roverName}</h3>
@@ -191,6 +195,10 @@ const PhotoList = (state) => {
             `)).join("")}
         </div>
     `)
+}
+
+const Loading = () => {
+    return `Loading...`
 }
 
 const showError = (err) => {
